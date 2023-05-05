@@ -7,7 +7,7 @@ The GUI will have to be restart to restart a match.
 
 ## How To Build and Run
 ### Upload to the Zumo Robot
-1. Extract the ... file from the ... folder and open it in the Arduino IDE.
+1. Extract the sumoZumoProject folder and open the sumoZumoProject.ino file in the Arduino IDE.
 2. Ensure the Board is set to Pololu A-Star 32U4 board.
 3. Plug the robot in via USB
 4. Drop down the board name and select the COM port the Zumo is connected to
