@@ -5,9 +5,12 @@
 #include "ZumoLCD.h"
 #include "customchars.h"
 
+// pin assignments for LCD
 uint8_t rs = 0, e = 1, db4 = 14, db5 = 17, db6 = 13, db7 = IO_D5;
 uint8_t lcdPins[] = {rs, e, db4, db5, db6, db7};
 
+// custom zumo LCD display class that allows for passing different pins
+// for use with LiquidCrystal LCD 
 ZumoLCD display(lcdPins);
 
 //Zumo32U4LCD display;
@@ -29,15 +32,10 @@ const uint16_t lineSensorThreshold = 1000;
 const uint8_t sensorThreshold = 12;
 
 const uint16_t turnSpeedMax = 300;
-
 const uint16_t turnSpeedMin = 100;
-
 const uint16_t forwardSpeed = 150;
-
 const uint16_t forwardSpeedMax = 300;
-
 const uint16_t deceleration = 10;
-
 const uint16_t acceleration = 10;
 
 #define LEFT 0
@@ -49,8 +47,8 @@ bool senseDir = RIGHT;
 bool turningLeft = false;
 bool turningRight = false;
 
+// Zumo turning speeds
 uint16_t turnSpeed = turnSpeedMax;
-
 uint16_t leftSpeed = forwardSpeed;
 uint16_t rightSpeed = forwardSpeed;
 
@@ -72,8 +70,9 @@ bool lineRight = false;
 // hold encoder value to line
 int16_t toLine;
 
+// records score
 int scoreWin;
-int scoreLoss;
+
 
 int accX;
 int accY;
@@ -109,7 +108,7 @@ void setup()
 
   delay(500);
 
-  // Wait for the user to press A before driving the motors.
+  // Waits for the user to press C before driving the motors.
   display.clear();
   display.setCursor(0, 0);
   display.blink();
@@ -117,15 +116,18 @@ void setup()
   buttonA.waitForButton();
   display.clear();
 
+  // set eyes to look forward
   eyesForward();
 
   Serial1.begin(9600);
 
+  //counter for blink
   stime = millis();
 }
 
 void eyesForward()
 {
+  // sets up eyes forward custom characters for LCD
   Serial1.end();
   display.begin(16,2);
   display.clear();
@@ -294,6 +296,7 @@ void eyesWin()
 
 void lineSensorRead()
 {
+  // determines it theres a line left or right
   lineSensors.read(lineSensorValues);
   if(lineSensorValues[0] >= lineSensorThreshold)
   {
@@ -350,6 +353,7 @@ void turnLeft()
 
 bool onLine()
 {
+  // checks if zumo is on a line
   lineSensorRead();
   if(lineLeft || lineRight)
   {
@@ -488,7 +492,6 @@ void driveTowards()
     
     if(onLine())
     {
-      // check if collision?
       stop();
       scoreWin += 1;
     }
@@ -512,6 +515,7 @@ void readAcc()
 
 bool collision()
 {
+  // checks for collision
   bool collided = false;
   if(accX > 500)
   {
@@ -616,6 +620,7 @@ void loop()
 
   lastBlink = millis() - stime;
 
+  // checks for last blink
   if(lastBlink > 2000)
   {
     stime = millis();
@@ -626,6 +631,7 @@ void loop()
     eyesForward();
   }
 
+  // sends score to GUI
   if(scoreWin > 0)
   {
     Serial1.print("My Score: ");
@@ -692,8 +698,6 @@ void loop()
     {
       // The values are equal, so drive towards opponent
       // object in front
-      //stop();
-      //delay(500);
       driveTowards();
 
     }
@@ -714,6 +718,8 @@ void loop()
     }
   }
 
+
+  // used to display prox and line sensor values on LCD when needed
   // display.gotoXY(0, 0);
   // display.print(lLValue);
   // display.print(' ');

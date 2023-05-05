@@ -3,6 +3,8 @@
 
 /*! \file ZumoLCD.h */
 
+// edited to work with LiquidCrystal LCD connected to Zumo
+
 #pragma once
 
 #include <PololuHD44780.h>

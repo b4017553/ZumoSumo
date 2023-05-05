@@ -1,3 +1,5 @@
+//custom chars for printing to LCD screen
+
 byte eye1[8] = {
 	0b00000,
 	0b00011,
